@@ -22,6 +22,14 @@ import { Label } from "./ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Textarea } from "./ui/textarea";
 
+interface Comment {
+  _id: string;
+  interviewerId: string;
+  content: string;
+  rating: number;
+  _creationTime: number;
+}
+
 function CommentDialog({ interviewId }: { interviewId: Id<"interviews"> }) {
   const [isOpen, setIsOpen] = useState(false);
   const [comment, setComment] = useState("");
@@ -32,21 +40,30 @@ function CommentDialog({ interviewId }: { interviewId: Id<"interviews"> }) {
   const existingComments = useQuery(api.comments.getComments, { interviewId });
 
   const handleSubmit = async () => {
-    if (!comment.trim()) return toast.error("Please enter comment");
+    if (!comment.trim()) {
+      toast.error("Please enter a comment");
+      return;
+    }
 
     try {
       await addComment({
         interviewId,
         content: comment.trim(),
-        rating: parseInt(rating),
+        rating: parseInt(rating, 10),
       });
 
       toast.success("Comment submitted");
       setComment("");
       setRating("3");
       setIsOpen(false);
-    } catch (error) {
-      toast.error("Failed to submit comment");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Error submitting comment:", error.message);
+        toast.error(error.message);
+      } else {
+        console.error("Unknown error:", error);
+        toast.error("Failed to submit comment");
+      }
     }
   };
 
@@ -61,7 +78,7 @@ function CommentDialog({ interviewId }: { interviewId: Id<"interviews"> }) {
     </div>
   );
 
-  if (existingComments === undefined || users === undefined) return null;
+  if (!existingComments || !users) return null;
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -91,10 +108,10 @@ function CommentDialog({ interviewId }: { interviewId: Id<"interviews"> }) {
               {/* DISPLAY EXISTING COMMENTS */}
               <ScrollArea className="h-[240px]">
                 <div className="space-y-4">
-                  {existingComments.map((comment, index) => {
+                  {existingComments.map((comment: Comment, index) => {
                     const interviewer = getInterviewerInfo(users, comment.interviewerId);
                     return (
-                      <div key={index} className="rounded-lg border p-4 space-y-3">
+                      <div key={comment._id || index} className="rounded-lg border p-4 space-y-3">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <Avatar className="h-8 w-8">
@@ -161,4 +178,5 @@ function CommentDialog({ interviewId }: { interviewId: Id<"interviews"> }) {
     </Dialog>
   );
 }
+
 export default CommentDialog;

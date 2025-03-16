@@ -1,5 +1,6 @@
 import { Clock, Code2, Calendar, Users } from "lucide-react";
 
+
 export const INTERVIEW_CATEGORY = [
   { id: "upcoming", title: "Upcoming Interviews", variant: "outline" },
   { id: "completed", title: "Completed", variant: "secondary" },
@@ -8,25 +9,9 @@ export const INTERVIEW_CATEGORY = [
 ] as const;
 
 export const TIME_SLOTS = [
-  "09:00",
-  "09:30",
-  "10:00",
-  "10:30",
-  "11:00",
-  "11:30",
-  "12:00",
-  "12:30",
-  "13:00",
-  "13:30",
-  "14:00",
-  "14:30",
-  "15:00",
-  "15:30",
-  "16:00",
-  "16:30",
-  "17:00",
-  "18:00",
-  
+  "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
+  "12:00", "12:30", "13:00", "13:30", "14:00", "14:30",
+  "15:00", "15:30", "16:00", "16:30", "17:00", "18:00",
 ];
 
 export const QUICK_ACTIONS = [
@@ -65,7 +50,7 @@ export const CODING_QUESTIONS: CodeQuestion[] = [
     id: "two-sum",
     title: "Two Sum",
     description:
-      "Given an array of integers `nums` and an integer `target`, return indices of the two numbers in the array such that they add up to `target`.\n\nYou may assume that each input would have exactly one solution, and you may not use the same element twice.",
+      "Given an array of integers `nums` and an integer `target`, return indices of the two numbers in the array such that they add up to `target`.",
     examples: [
       {
         input: "nums = [2,7,11,15], target = 9",
@@ -80,7 +65,6 @@ export const CODING_QUESTIONS: CodeQuestion[] = [
     starterCode: {
       javascript: `function twoSum(nums, target) {
   // Write your solution here
-  
 }`,
       python: `def two_sum(nums, target):
     # Write your solution here
@@ -88,7 +72,6 @@ export const CODING_QUESTIONS: CodeQuestion[] = [
       java: `class Solution {
     public int[] twoSum(int[] nums, int target) {
         // Write your solution here
-        
     }
 }`,
     },
@@ -103,7 +86,7 @@ export const CODING_QUESTIONS: CodeQuestion[] = [
     id: "reverse-string",
     title: "Reverse String",
     description:
-      "Write a function that reverses a string. The input string is given as an array of characters `s`.\n\nYou must do this by modifying the input array in-place with O(1) extra memory.",
+      "Write a function that reverses a string. The input string is given as an array of characters `s`.",
     examples: [
       {
         input: 's = ["h","e","l","l","o"]',
@@ -117,7 +100,6 @@ export const CODING_QUESTIONS: CodeQuestion[] = [
     starterCode: {
       javascript: `function reverseString(s) {
   // Write your solution here
-  
 }`,
       python: `def reverse_string(s):
     # Write your solution here
@@ -125,7 +107,6 @@ export const CODING_QUESTIONS: CodeQuestion[] = [
       java: `class Solution {
     public void reverseString(char[] s) {
         // Write your solution here
-        
     }
 }`,
     },
@@ -134,7 +115,7 @@ export const CODING_QUESTIONS: CodeQuestion[] = [
     id: "palindrome-number",
     title: "Palindrome Number",
     description:
-      "Given an integer `x`, return `true` if `x` is a palindrome, and `false` otherwise.\n\nAn integer is a palindrome when it reads the same forward and backward.",
+      "Given an integer `x`, return `true` if `x` is a palindrome, and `false` otherwise.",
     examples: [
       {
         input: "x = 121",
@@ -144,14 +125,12 @@ export const CODING_QUESTIONS: CodeQuestion[] = [
       {
         input: "x = -121",
         output: "false",
-        explanation:
-          "From left to right, it reads -121. From right to left, it becomes 121-. Therefore it is not a palindrome.",
+        explanation: "From left to right, it reads -121. From right to left, it becomes 121-. Therefore it is not a palindrome.",
       },
     ],
     starterCode: {
       javascript: `function isPalindrome(x) {
   // Write your solution here
-  
 }`,
       python: `def is_palindrome(x):
     # Write your solution here
@@ -159,7 +138,6 @@ export const CODING_QUESTIONS: CodeQuestion[] = [
       java: `class Solution {
     public boolean isPalindrome(int x) {
         // Write your solution here
-        
     }
 }`,
     },
@@ -172,6 +150,10 @@ export const LANGUAGES = [
   { id: "java", name: "Java", icon: "/java.png" },
 ] as const;
 
+// ✅ Fix: Properly handle Next.js Image component
+
+
+// ✅ Define TypeScript Interfaces
 export interface CodeQuestion {
   id: string;
   title: string;

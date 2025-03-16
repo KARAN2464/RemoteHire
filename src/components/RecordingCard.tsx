@@ -8,10 +8,14 @@ import { Button } from "./ui/button";
 
 function RecordingCard({ recording }: { recording: CallRecording }) {
   const handleCopyLink = async () => {
+    if (!recording.url) {
+      toast.error("Recording URL is not available.");
+      return;
+    }
     try {
       await navigator.clipboard.writeText(recording.url);
       toast.success("Recording link copied to clipboard");
-    } catch (error) {
+    } catch {
       toast.error("Failed to copy link to clipboard");
     }
   };
@@ -44,19 +48,20 @@ function RecordingCard({ recording }: { recording: CallRecording }) {
       </CardHeader>
 
       {/* CARD CONTENT */}
-
       <CardContent>
         <div
           className="w-full aspect-video bg-muted/50 rounded-lg flex items-center justify-center cursor-pointer group"
-          onClick={() => window.open(recording.url, "_blank")}
+          onClick={() => recording.url && window.open(recording.url, "_blank")}
         >
           <div className="size-12 rounded-full bg-background/90 flex items-center justify-center group-hover:bg-primary transition-colors">
             <PlayIcon className="size-6 text-muted-foreground group-hover:text-primary-foreground transition-colors" />
           </div>
         </div>
       </CardContent>
+
+      {/* CARD FOOTER */}
       <CardFooter className="gap-2">
-        <Button className="flex-1" onClick={() => window.open(recording.url, "_blank")}>
+        <Button className="flex-1" onClick={() => recording.url && window.open(recording.url, "_blank")}>
           <PlayIcon className="size-4 mr-2" />
           Play Recording
         </Button>
@@ -67,4 +72,5 @@ function RecordingCard({ recording }: { recording: CallRecording }) {
     </Card>
   );
 }
+
 export default RecordingCard;

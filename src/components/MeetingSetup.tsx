@@ -9,24 +9,38 @@ function MeetingSetup({ onSetupComplete }: { onSetupComplete: () => void }) {
   const [isCameraDisabled, setIsCameraDisabled] = useState(true);
   const [isMicDisabled, setIsMicDisabled] = useState(false);
 
-  const call = useCall();
+  const call = useCall(); // `call` might be undefined initially
 
-  if (!call) return null;
-
+  // Handle camera toggle
   useEffect(() => {
-    if (isCameraDisabled) call.camera.disable();
-    else call.camera.enable();
-  }, [isCameraDisabled, call.camera]);
+    if (call) {
+      if (isCameraDisabled) {
+        call.camera.disable();
+      } else {
+        call.camera.enable();
+      }
+    }
+  }, [isCameraDisabled, call]);
 
+  // Handle microphone toggle
   useEffect(() => {
-    if (isMicDisabled) call.microphone.disable();
-    else call.microphone.enable();
-  }, [isMicDisabled, call.microphone]);
+    if (call) {
+      if (isMicDisabled) {
+        call.microphone.disable();
+      } else {
+        call.microphone.enable();
+      }
+    }
+  }, [isMicDisabled, call]);
 
   const handleJoin = async () => {
-    await call.join();
-    onSetupComplete();
+    if (call) {
+      await call.join();
+      onSetupComplete();
+    }
   };
+
+  if (!call) return null; // Moved after hooks
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6 bg-background/95">
@@ -48,7 +62,6 @@ function MeetingSetup({ onSetupComplete }: { onSetupComplete: () => void }) {
           </Card>
 
           {/* CARD CONTROLS */}
-
           <Card className="md:col-span-1 p-6">
             <div className="h-full flex flex-col">
               {/* MEETING DETAILS  */}
@@ -58,7 +71,7 @@ function MeetingSetup({ onSetupComplete }: { onSetupComplete: () => void }) {
               </div>
 
               <div className="flex-1 flex flex-col justify-between">
-                <div className="spacey-6 mt-8">
+                <div className="space-y-6 mt-8">
                   {/* CAM CONTROL */}
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
